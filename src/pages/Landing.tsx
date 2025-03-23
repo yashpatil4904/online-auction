@@ -32,7 +32,7 @@ const Landing: React.FC = () => {
             <img 
               src="/assets/logo.png" 
               alt="PrimeBid Logo" 
-              className="h-12 w-12 object-contain"
+              className="h-10 w-10 object-contain"
             />
           </div>
               <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">

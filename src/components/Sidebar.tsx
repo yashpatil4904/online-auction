@@ -13,6 +13,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
     { name: 'Home', path: '/home', icon: Home },
     { name: 'Sell', path: '/sell', icon: Package },
     { name: 'My Auctions', path: '/my-auctions', icon: Package },
+    { name: 'Profile', path: '/profile', icon: User },
   ];
 
   return (
@@ -35,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-4 space-y-2">
         {navigation.map((item) => {
           const Icon = item.icon;
           return (
