@@ -21,9 +21,7 @@ const Navbar: React.FC = () => {
           {/* Logo and Name */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center gap-3">
-              <div className="bg-blue-600 p-2 rounded-lg">
-                <Gavel className="h-6 w-6 text-white" />
-              </div>
+              
               <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
               PrimeBid
               </span>
