@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Camera, Package, DollarSign, Clock, Tag } from 'lucide-react';
+import { Camera, Package, DollarSign, Clock, Tag, ArrowDown, ArrowUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const Sell: React.FC = () => {
   const [images, setImages] = useState<File[]>([]);
+  const [auctionType, setAuctionType] = useState<'regular' | 'reverse'>('regular');
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -15,6 +16,11 @@ const Sell: React.FC = () => {
     duration: '7',
     shippingCost: '',
     location: '',
+    // Reverse auction specific fields
+    initialPrice: '',
+    priceReductionAmount: '',
+    priceReductionInterval: '24', // hours
+    minimumPrice: '',
   });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -39,6 +45,39 @@ const Sell: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <h1 className="text-2xl font-bold mb-6 dark:text-white">List Your Item for Auction</h1>
+
+        {/* Auction Type Selection */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Auction Type
+          </label>
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={() => setAuctionType('regular')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${
+                auctionType === 'regular'
+                  ? 'bg-blue-500 text-white border-blue-500'
+                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-500'
+              }`}
+            >
+              <ArrowUp size={16} />
+              Regular Auction
+            </button>
+            <button
+              type="button"
+              onClick={() => setAuctionType('reverse')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${
+                auctionType === 'reverse'
+                  ? 'bg-blue-500 text-white border-blue-500'
+                  : 'border-gray-300 dark:border-gray-600 hover:border-blue-500'
+              }`}
+            >
+              <ArrowDown size={16} />
+              Reverse Auction
+            </button>
+          </div>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Image Upload */}
@@ -154,43 +193,124 @@ const Sell: React.FC = () => {
 
           {/* Pricing & Duration */}
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Starting Price ($)
-              </label>
-              <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                <input
-                  type="number"
-                  value={form.startingPrice}
-                  onChange={(e) => setForm({ ...form, startingPrice: e.target.value })}
-                  className="w-full pl-10 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  placeholder="0.00"
-                  min="0"
-                  step="0.01"
-                  required
-                />
-              </div>
-            </div>
+            {auctionType === 'regular' ? (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Starting Price ($)
+                  </label>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                    <input
+                      type="number"
+                      value={form.startingPrice}
+                      onChange={(e) => setForm({ ...form, startingPrice: e.target.value })}
+                      className="w-full pl-10 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      placeholder="0.00"
+                      min="0"
+                      step="0.01"
+                      required
+                    />
+                  </div>
+                </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Minimum Bid Increment ($)
-              </label>
-              <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                <input
-                  type="number"
-                  value={form.minimumBidIncrement}
-                  onChange={(e) => setForm({ ...form, minimumBidIncrement: e.target.value })}
-                  className="w-full pl-10 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  placeholder="0.00"
-                  min="0"
-                  step="0.01"
-                  required
-                />
-              </div>
-            </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Minimum Bid Increment ($)
+                  </label>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                    <input
+                      type="number"
+                      value={form.minimumBidIncrement}
+                      onChange={(e) => setForm({ ...form, minimumBidIncrement: e.target.value })}
+                      className="w-full pl-10 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      placeholder="0.00"
+                      min="0"
+                      step="0.01"
+                      required
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Initial Price ($)
+                  </label>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                    <input
+                      type="number"
+                      value={form.initialPrice}
+                      onChange={(e) => setForm({ ...form, initialPrice: e.target.value })}
+                      className="w-full pl-10 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      placeholder="0.00"
+                      min="0"
+                      step="0.01"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Price Reduction Amount ($)
+                  </label>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                    <input
+                      type="number"
+                      value={form.priceReductionAmount}
+                      onChange={(e) => setForm({ ...form, priceReductionAmount: e.target.value })}
+                      className="w-full pl-10 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      placeholder="0.00"
+                      min="0"
+                      step="0.01"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Price Reduction Interval (hours)
+                  </label>
+                  <div className="relative">
+                    <Clock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                    <input
+                      type="number"
+                      value={form.priceReductionInterval}
+                      onChange={(e) => setForm({ ...form, priceReductionInterval: e.target.value })}
+                      className="w-full pl-10 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      placeholder="24"
+                      min="1"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Minimum Price ($)
+                  </label>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                    <input
+                      type="number"
+                      value={form.minimumPrice}
+                      onChange={(e) => setForm({ ...form, minimumPrice: e.target.value })}
+                      className="w-full pl-10 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                      placeholder="0.00"
+                      min="0"
+                      step="0.01"
+                      required
+                    />
+                  </div>
+                </div>
+              </>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
