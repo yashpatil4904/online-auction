@@ -2,11 +2,14 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Spline from '@splinetool/react-spline';
-import Navbar from './components/Navbar';
+import Layout from './components/Layout';
 import Home from './pages/Home';
 import Sell from './pages/Sell';
 import MyAuctions from './pages/MyAuctions';
 import Profile from './pages/Profile';
+import Landing from './pages/Landing';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -30,13 +33,31 @@ function App() {
       {/* Content Layer */}
       <div className="relative z-10 min-h-screen bg-gradient-to-b from-gray-50/80 to-gray-100/80 dark:from-gray-900/80 dark:to-gray-800/80 backdrop-blur-sm">
         <Toaster position="top-right" />
-        <Navbar />
         
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/sell" element={<Sell />} />
-          <Route path="/my-auctions" element={<MyAuctions />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/home" element={
+            <Layout>
+              <Home />
+            </Layout>
+          } />
+          <Route path="/sell" element={
+            <Layout>
+              <Sell />
+            </Layout>
+          } />
+          <Route path="/my-auctions" element={
+            <Layout>
+              <MyAuctions />
+            </Layout>
+          } />
+          <Route path="/profile" element={
+            <Layout>
+              <Profile />
+            </Layout>
+          } />
         </Routes>
       </div>
     </div>

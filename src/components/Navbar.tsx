@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
   const location = useLocation();
 
   const navigation = [
-    { name: 'Browse', path: '/' },
+    { name: 'Browse', path: '/home' },
     { name: 'Sell', path: '/sell' },
     { name: 'My Auctions', path: '/my-auctions' },
   ];
@@ -17,37 +17,40 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
+        <div className="flex items-center h-16">
+          {/* Logo and Name */}
+          <div className="flex-shrink-0">
             <Link to="/" className="flex items-center gap-3">
               <div className="bg-blue-600 p-2 rounded-lg">
                 <Gavel className="h-6 w-6 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                Modern Auctions
+              PrimeBid
               </span>
             </Link>
+          </div>
 
-            <div className="hidden md:block ml-10">
-              <div className="flex items-center space-x-4">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.path}
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      location.pathname === item.path
-                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400'
-                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
+          {/* Navigation Links */}
+          <div className="hidden md:block ml-10">
+            <div className="flex items-center space-x-4">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    location.pathname === item.path
+                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
+          {/* Right side items */}
+          <div className="hidden md:flex items-center gap-4 ml-auto">
             <div className="relative">
               <input
                 type="text"
@@ -73,7 +76,8 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          <div className="md:hidden">
+          {/* Mobile menu button */}
+          <div className="md:hidden ml-auto">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
